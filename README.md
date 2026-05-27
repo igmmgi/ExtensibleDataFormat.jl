@@ -30,4 +30,4 @@ end
 
 ## Acknowledgments
 
-Development and refactoring of the core I/O architecture was assisted by Google's Gemini 3.1, with reference to the official [pyxdf](https://github.com/sccn/xdf/tree/master/Python/pyxdf) Python implementation for robust mathematical synchronization and de-jittering algorithms.
+Development and refactoring of the core I/O architecture was assisted by Google's Gemini 3.1, with reference to the official [pyxdf](https://github.com/sccn/xdf/tree/master/Python/pyxdf) Python implementation for synchronization and de-jittering algorithms.
