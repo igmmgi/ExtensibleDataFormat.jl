@@ -161,14 +161,33 @@ function _jitter_removal!(streams_meta::Dict{Int, Any};
             seg_stops = [break_inds; nsamples]
             
             for (start_ix, stop_ix) in zip(seg_starts, seg_stops)
-                idx = start_ix:stop_ix
-                idx_float = Float64.(idx)
-                X = hcat(ones(length(idx)), idx_float)
-                y = timestamps[idx]
-                
-                # lstsq: X \ y
-                mapping = X \ y
-                timestamps[idx] .= mapping[1] .+ mapping[2] .* idx_float
+                N = stop_ix - start_ix + 1
+                if N > 1
+                    x_bar = (start_ix + stop_ix) / 2.0
+                    
+                    # Compute mean of y
+                    sum_y = 0.0
+                    for i in start_ix:stop_ix
+                        sum_y += timestamps[i]
+                    end
+                    y_bar = sum_y / N
+                    
+                    # Compute slope (beta_1)
+                    num = 0.0
+                    for i in start_ix:stop_ix
+                        num += (i - x_bar) * timestamps[i]
+                    end
+                    den = N * (N^2 - 1) / 12.0
+                    slope = num / den
+                    
+                    # Compute intercept (beta_0)
+                    intercept = y_bar - slope * x_bar
+                    
+                    # Apply correction
+                    for i in start_ix:stop_ix
+                        timestamps[i] = intercept + slope * i
+                    end
+                end
             end
             
             counts = (seg_stops .+ 1) .- seg_starts
