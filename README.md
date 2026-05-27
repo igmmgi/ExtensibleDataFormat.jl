@@ -1,6 +1,6 @@
 # ExtensibleDataFormat.jl
 
-A lightweight, zero-dependency Julia package for reading Extensible Data Format (.xdf) files.
+A lightweight Julia package for reading Extensible Data Format (.xdf) files.
 
 ## Overview
 
@@ -27,15 +27,6 @@ for (id, stream) in xdf.streams
     println()
 end
 ```
-
-## Features
-
-- **Blisteringly Fast**: Utilizes a highly-optimized, allocation-free, two-pass parsing algorithm. Benchmarks show it runs up to ~19x faster than standard Python implementations.
-- **Robust Clock Synchronization**: Implements ADMM Huber-loss optimization to robustly calculate clock offsets while ignoring jitter spikes and detecting hardware clock resets.
-- **De-Jittering**: Uses segmented least-squares regression to automatically enforce uniform sampling grids on networks with high latency variance.
-- **Fault-Tolerant**: Implements byte-by-byte boundary signature scanning to recover from corrupted recordings.
-- **Native XML Parsing**: Includes a lightweight, pure-Julia XML parser that automatically converts XDF headers into nested Julia Dictionaries without relying on external C-libraries (like `EzXML.jl`).
-- **Zero-Dependency Core**: Only depends on standard libraries (`LinearAlgebra`, `Statistics`) and `CodecZlib` for on-the-fly decompression.
 
 ## Acknowledgments
 
