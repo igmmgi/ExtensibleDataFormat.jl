@@ -109,6 +109,7 @@ function _clock_sync!(streams_meta::Dict{Int,Any};
 
                 c = _robust_fit(X, y_slice)
                 c[1] *= winsor_threshold
+                c[2] *= winsor_threshold
                 push!(coef, (c[1], c[2]))
             else
                 push!(coef, (clock_values[start_idx], 0.0))
@@ -153,7 +154,7 @@ function _jitter_removal!(streams_meta::Dict{Int,Any};
         if nsamples > 0 && srate > 0
             diffs = diff(timestamps)
             max_thresh = max(threshold_seconds, threshold_samples * tdiff)
-            b_breaks = diffs .> max_thresh
+            b_breaks = (diffs .> max_thresh) .| (diffs .< 0.0)
 
             break_inds = findall(b_breaks)
 
@@ -177,7 +178,7 @@ function _jitter_removal!(streams_meta::Dict{Int,Any};
                     for i in start_ix:stop_ix
                         num += (i - x_bar) * timestamps[i]
                     end
-                    den = N * (N^2 - 1) / 12.0
+                    den = Float64(N) * (Float64(N)^2 - 1.0) / 12.0
                     slope = num / den
                     
                     # Compute intercept (beta_0)
@@ -199,7 +200,7 @@ function _jitter_removal!(streams_meta::Dict{Int,Any};
 
         effective_srate = meta["effective_srate"]::Float64
         if srate != 0 && abs(srate - effective_srate) / srate > 0.1
-            @warn "Stream \$id: Calculated effective sampling rate \$effective_srate Hz is different from specified rate \$srate Hz."
+            @warn "Stream $id: Calculated effective sampling rate $effective_srate Hz is different from specified rate $srate Hz."
         end
     end
 end
