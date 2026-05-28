@@ -198,7 +198,7 @@ function _jitter_removal!(streams_meta::Dict{Int,Any};
         end
 
         effective_srate = meta["effective_srate"]::Float64
-        if srate != 0 && abs(srate - effective_srate) / srate > 0.1
+        if srate != 0 && effective_srate > 0.0 && abs(srate - effective_srate) / srate > 0.1
             @warn "Stream $id: Calculated effective sampling rate $effective_srate Hz is different from specified rate $srate Hz."
         end
     end
