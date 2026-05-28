@@ -280,7 +280,7 @@ function read_xdf(filename::String;
         file_info = Dict{String, Any}("text" => file_info)
     end
     
-    return XdfData(file_info, final_streams)
+    return XdfData(filename, file_info, final_streams)
 end
 
 function _read_chunk_numeric!(io::IO, nsamples::Int, nchannels::Int, srate::Float64, timestamps::Vector{Float64}, time_series::Matrix{T}, current_index::Int) where T

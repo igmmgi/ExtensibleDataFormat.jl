@@ -1,6 +1,6 @@
 name = "ExtensibleDataFormat"
 uuid = "2b00c89a-a032-41e6-8f7f-64a330142705"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["igmmgi <ian.mackenzie@uni-tuebingen.de>"]
 
 [deps]

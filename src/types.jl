@@ -34,6 +34,7 @@ end
 A collection of all streams read from an XDF file.
 """
 struct XdfData
+    filename::String
     info::Dict{String, Any}
     streams::Dict{Int,XdfStream}
 end
