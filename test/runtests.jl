@@ -49,8 +49,8 @@ import ExtensibleDataFormat: _robust_fit, _clock_sync!, _jitter_removal!
     end
 
     @testset "End-to-End File Parsing" begin
-        # We test on bundled test files
-        for test_file in ["test1.xdf", "test2.xdf"]
+        # We test on bundled test files and the official minimal standard test files
+        for test_file in ["test.xdf", "minimal.xdf", "clock_resets.xdf", "empty_streams.xdf"]
             file_path = joinpath(@__DIR__, test_file)
             if isfile(file_path)
                 data = read_xdf(file_path; sync=true, dejitter_timestamps=true)
@@ -66,6 +66,54 @@ import ExtensibleDataFormat: _robust_fit, _clock_sync!, _jitter_removal!
                     # Verify deep XML parsing works natively
                     @test stream.header.info isa Dict{String, Any}
                     @test haskey(stream.header.info, "info")
+                end
+                
+                # Standard compliance assertions
+                if test_file == "minimal.xdf"
+                    @test length(data.streams) == 2
+                    s1 = data.streams[0]
+                    s2 = data.streams[46202862]
+                    @test s1.header.channel_count == 3
+                    @test size(s1.time_series, 1) == 9
+                    @test s1.header.channel_format == "Int16"
+                    # Assert exact parsed data values
+                    @test s1.time_series[1, 1] == 192
+                    @test s1.time_series[2, 2] == 22
+                    @test s1.time_series[3, 3] == 33
+                    
+                    @test s2.header.channel_count == 1
+                    @test size(s2.time_series, 1) == 9
+                    @test s2.header.channel_format == "String"
+                    @test s2.time_series[2, 1] == "Hello"
+                    @test s2.time_series[3, 1] == "World"
+                    
+                elseif test_file == "clock_resets.xdf"
+                    @test length(data.streams) == 2
+                    s1 = data.streams[1]
+                    s2 = data.streams[2]
+                    @test size(s1.time_series, 1) == 175
+                    @test s1.header.channel_format == "String"
+                    @test size(s2.time_series, 1) == 27815
+                    @test s2.header.channel_count == 8
+                    @test s2.header.channel_format == "Float32"
+                    
+                elseif test_file == "empty_streams.xdf"
+                    @test length(data.streams) == 4
+                    # Test Stream 1
+                    @test size(data.streams[1].time_series, 1) == 1
+                    @test data.streams[1].header.channel_format == "String"
+                    @test data.streams[1].time_series[1, 1] == "{\"state\": 2}"
+                    # Test Empty Stream 2
+                    @test size(data.streams[2].time_series, 1) == 0
+                    @test data.streams[2].header.channel_format == "String"
+                    # Test Empty Stream 3
+                    @test size(data.streams[3].time_series, 1) == 0
+                    @test data.streams[3].header.channel_format == "Float32"
+                    # Test Stream 4 (Int32 counter)
+                    @test size(data.streams[4].time_series, 1) == 10
+                    @test data.streams[4].header.channel_format == "Int32"
+                    @test data.streams[4].time_series[1, 1] == 0
+                    @test data.streams[4].time_series[end, 1] == 9
                 end
                 
                 # Test selective stream loading

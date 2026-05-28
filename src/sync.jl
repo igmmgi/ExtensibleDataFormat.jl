@@ -109,7 +109,6 @@ function _clock_sync!(streams_meta::Dict{Int,Any};
 
                 c = _robust_fit(X, y_slice)
                 c[1] *= winsor_threshold
-                c[2] *= winsor_threshold
                 push!(coef, (c[1], c[2]))
             else
                 push!(coef, (clock_values[start_idx], 0.0))
