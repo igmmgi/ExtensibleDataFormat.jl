@@ -328,7 +328,7 @@ function _read_varlen_int(io::IO)
     elseif nbytes == 8
         return Int(read(io, UInt64))
     else
-        error("Invalid variable length integer size: \$nbytes")
+        error("Invalid variable length integer size: $nbytes")
     end
 end
 

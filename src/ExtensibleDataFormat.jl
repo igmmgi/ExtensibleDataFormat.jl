@@ -1,6 +1,7 @@
 module ExtensibleDataFormat
 
 using LinearAlgebra
+using Statistics: median
 using CodecZlib
 
 export XdfData, XdfStream, read_xdf

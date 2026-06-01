@@ -1,8 +1,5 @@
 # sync.jl
 
-using LinearAlgebra
-using Statistics: median
-
 """
     _robust_fit(A, y; rho=1.0, iters=1000)
 

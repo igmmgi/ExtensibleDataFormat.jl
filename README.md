@@ -1,5 +1,8 @@
 # ExtensibleDataFormat.jl
 
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://igmmgi.github.io/ExtensibleDataFormat.jl/)
+[![CI](https://github.com/igmmgi/ExtensibleDataFormat.jl/workflows/Tests/badge.svg)](https://github.com/igmmgi/ExtensibleDataFormat.jl/actions)
+
 A lightweight Julia package for reading Extensible Data Format (.xdf) files.
 
 ## Overview
@@ -18,7 +21,7 @@ xdf = read_xdf("path/to/your/recording.xdf")
 
 # Inspect the streams
 for (id, stream) in xdf.streams
-    println("Stream ID: \$id")
+    println("Stream ID: $id")
     println("Name: ", stream.header.name)
     println("Type: ", stream.header.type)
     println("Sample Rate: ", stream.header.nominal_srate)
@@ -31,3 +34,7 @@ end
 ## Acknowledgments
 
 Development and refactoring of the core I/O architecture was assisted by Google's Gemini 3.1, with reference to the [pyxdf](https://github.com/sccn/xdf/tree/master/Python/pyxdf) Python implementation for synchronization and de-jittering algorithms.
+
+## License
+
+MIT
