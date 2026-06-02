@@ -1,8 +1,8 @@
 name = "ExtensibleDataFormat"
 uuid = "2b00c89a-a032-41e6-8f7f-64a330142705"
+license = "MIT"
 version = "0.1.1"
 authors = ["igmmgi <ian.mackenzie@uni-tuebingen.de>"]
-license = "MIT"
 
 [deps]
 CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
@@ -11,6 +11,7 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 CodecZlib = "0.7"
+Statistics = "1"
 julia = "1.10"
 
 [extras]
